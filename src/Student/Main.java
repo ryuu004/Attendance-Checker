@@ -23,23 +23,24 @@ public class Main {
 
         // Left panel
         JPanel leftPanel = new JPanel();
-        leftPanel.setBackground(Color.LIGHT_GRAY);
+        leftPanel.setBackground(new Color(0x212894));
         leftPanel.setPreferredSize(new Dimension(200, 600));
 
         // Middle panel with schedule table
         JPanel middlePanel = new JPanel(new BorderLayout());
-        middlePanel.setBackground(Color.WHITE);
+        middlePanel.setBackground(new Color(0x121866));
         middlePanel.setPreferredSize(new Dimension(500, 600));
 
         // Panel at the top of the table
         JPanel topPanel = new JPanel();
-        topPanel.setBackground(Color.WHITE);
-        topPanel.setPreferredSize(new Dimension(500, 150)); // Adjust the height as needed
+        topPanel.setPreferredSize(new Dimension(500, 200)); // Adjust the height as needed
+        topPanel.setLayout(new BorderLayout());
 
-        // Create a label or add components to the top panel as desired
-        JLabel titleLabel = new JLabel("Schedule");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20)); // Example of setting font and size
-        topPanel.add(titleLabel);
+        // Load the cover photo image using getResource
+        ImageIcon coverPhotoIcon = new ImageIcon(Main.class.getResource("/Images/Cover.png"));
+        JLabel coverPhotoLabel = new JLabel(coverPhotoIcon);
+        topPanel.add(coverPhotoLabel);
+
 
         // Add the top panel to the middle panel
         middlePanel.add(topPanel, BorderLayout.NORTH);
@@ -50,7 +51,7 @@ public class Main {
         rightPanel.setPreferredSize(new Dimension(200, 600));
 
         // Button to modify status
-        JButton modifyStatusButton = new JButton("Modify Status");
+        JButton modifyStatusButton = new JButton("Status");
         modifyStatusButton.setPreferredSize(new Dimension(150, 50)); // Adjust button size as needed
         rightPanel.add(modifyStatusButton, BorderLayout.NORTH);
 
@@ -63,7 +64,7 @@ public class Main {
         rightPanel.add(friendScrollPane, BorderLayout.CENTER);
 
         // Load profile icon using getResource
-        ImageIcon originalIcon = new ImageIcon(Main.class.getResource("/ProfileIcons/Student1icon.png"));
+        ImageIcon originalIcon = new ImageIcon(Main.class.getResource("/ProfileIcons/Student2icon.png"));
 
         // Create the profile icon button as a circle
         JButton profileButton = new JButton() {
@@ -93,6 +94,18 @@ public class Main {
         JButton settingsBtn = new JButton("Settings");
         JButton logoutBtn = new JButton("Logout");
 
+        // Set background color and font color for buttons
+        Color buttonColor = new Color(0x2f2678); // Hexadecimal color #121866
+        profileBtn.setBackground(buttonColor);
+        friendsBtn.setBackground(buttonColor);
+        settingsBtn.setBackground(buttonColor);
+        logoutBtn.setBackground(buttonColor);
+
+        profileBtn.setForeground(Color.WHITE); // Set font color to white
+        friendsBtn.setForeground(Color.WHITE); // Set font color to white
+        settingsBtn.setForeground(Color.WHITE); // Set font color to white
+        logoutBtn.setForeground(Color.WHITE); // Set font color to white
+
         // Set preferred sizes for the buttons
         Dimension buttonSize = new Dimension(100, 70); // Adjust as needed
         profileBtn.setPreferredSize(buttonSize);
@@ -102,6 +115,7 @@ public class Main {
 
         // Create a panel for the other buttons
         JPanel navBarPanel = new JPanel(new GridLayout(4, 1));
+        navBarPanel.setBackground(new Color(0x121866));
         navBarPanel.add(profileBtn);
         navBarPanel.add(friendsBtn);
         navBarPanel.add(settingsBtn);
@@ -110,6 +124,7 @@ public class Main {
         // Create a panel for the profile button
         JPanel profilePanel = new JPanel(new GridBagLayout());
         profilePanel.setPreferredSize(new Dimension(100, 100));
+        profilePanel.setBackground(new Color(0x201a59));
         profilePanel.add(profileButton);
 
         // Add components to the left panel
@@ -130,7 +145,7 @@ public class Main {
         };
 
         // Table column names
-        String[] columnNames = {"Teacher Name", "Subject", "Time"};
+        String[] columnNames = {"Teacher", "Subject", "Time"};
 
         // Create table model
         DefaultTableModel tableModel = new DefaultTableModel(scheduleData, columnNames) {
@@ -140,12 +155,53 @@ public class Main {
             }
         };
 
-        // Create table
-        JTable scheduleTable = new JTable(tableModel);
-        scheduleTable.setRowHeight(75); // Set row height
+// Create table
+        JTable scheduleTable = new JTable(tableModel) {
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component component = super.prepareRenderer(renderer, row, column);
+                if (isRowSelected(row)) {
+                    component.setBackground(new Color(0x7e40e3));
+                    component.setForeground(new Color(0xe1cfff));
+                } else {
+                    component.setBackground(row % 2 == 0 ? new Color(0xc4a6f5) : Color.WHITE);
+                    component.setForeground(Color.BLACK);
+                }
+                return component;
+            }
+        };
 
-        // Create buttons renderer
-        scheduleTable.getColumnModel().getColumn(0).setCellRenderer(new ButtonRenderer());
+        // Add mouse listener to handle hover effect
+        scheduleTable.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                int row = scheduleTable.rowAtPoint(e.getPoint());
+                if (row > -1) {
+                    scheduleTable.clearSelection(); // Clear previous selection
+                    scheduleTable.setRowSelectionInterval(row, row); // Select the current row
+                }
+            }
+        });
+
+        scheduleTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                scheduleTable.clearSelection(); // Clear selection when mouse exits the table
+            }
+        });
+
+        scheduleTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+        scheduleTable.getTableHeader().setPreferredSize(new Dimension(500, 40));
+        scheduleTable.getTableHeader().setBackground(new Color(0x231b69));
+        scheduleTable.getTableHeader().setForeground(Color.white);
+        scheduleTable.setRowHeight(40); // Set row height
+        scheduleTable.setFont(new Font("Arial", Font.PLAIN, 12));
+        ((DefaultTableCellRenderer) scheduleTable.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER); // Center align header text
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER); // Center align cell text
+        scheduleTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        scheduleTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        scheduleTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 
         // Add table to scroll pane
         JScrollPane scrollPane = new JScrollPane(scheduleTable);
@@ -184,25 +240,5 @@ public class Main {
     // Method to add a friend to the list
     private static void addFriend(String friendName) {
         friendListModel.addElement(friendName);
-    }
-
-    // Button renderer for table
-    static class ButtonRenderer extends JButton implements TableCellRenderer {
-        public ButtonRenderer() {
-            setOpaque(true);
-        }
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            if (isSelected) {
-                setForeground(table.getSelectionForeground());
-                setBackground(table.getSelectionBackground());
-            } else {
-                setForeground(table.getForeground());
-                setBackground(UIManager.getColor("Button.background"));
-            }
-            setText((value == null) ? "" : value.toString());
-            return this;
-        }
     }
 }
