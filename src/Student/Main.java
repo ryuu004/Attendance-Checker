@@ -33,7 +33,7 @@ public class Main {
 
         // Panel at the top of the table
         JPanel topPanel = new JPanel();
-        topPanel.setPreferredSize(new Dimension(500, 200)); // Adjust the height as needed
+        topPanel.setPreferredSize(new Dimension(500, 200));
         topPanel.setLayout(new BorderLayout());
 
         // Load the cover photo image using getResource
@@ -46,22 +46,55 @@ public class Main {
         middlePanel.add(topPanel, BorderLayout.NORTH);
 
         // Right panel
-        JPanel rightPanel = new JPanel(new BorderLayout());
+        JPanel rightPanel = new JPanel();
         rightPanel.setBackground(Color.LIGHT_GRAY);
         rightPanel.setPreferredSize(new Dimension(200, 600));
+        rightPanel.setLayout(new BorderLayout());
 
         // Button to modify status
         JButton modifyStatusButton = new JButton("Status");
-        modifyStatusButton.setPreferredSize(new Dimension(150, 50)); // Adjust button size as needed
+        modifyStatusButton.setPreferredSize(new Dimension(150, 29));
         rightPanel.add(modifyStatusButton, BorderLayout.NORTH);
+        modifyStatusButton.setBackground(new Color(0x2f2678));
+        modifyStatusButton.setForeground(Color.WHITE);
+
+        // Create a panel for the inbox button
+        JPanel inboxPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        inboxPanel.setBackground(new Color(0x201a59));
+        inboxPanel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
+
+        // Button to access inbox
+        JButton inboxButton = new JButton("Inbox");
+        inboxButton.setPreferredSize(new Dimension(200, 29));
+        inboxPanel.add(inboxButton);
+        inboxButton.setBackground(new Color(0x2f2678));
+        inboxButton.setForeground(Color.WHITE);
+
+        rightPanel.add(inboxPanel, BorderLayout.CENTER);
 
         // List of friends/teachers and their status
         friendListModel = new DefaultListModel<>();
         JList<String> friendList = new JList<>(friendListModel);
         friendList.setFixedCellHeight(40); // Set the height of each item
-        JScrollPane friendScrollPane = new JScrollPane(friendList);
-        friendScrollPane.setPreferredSize(new Dimension(150, 500)); // Adjust scroll pane size as needed
-        rightPanel.add(friendScrollPane, BorderLayout.CENTER);
+        friendList.setBackground(Color.white);
+        friendList.setForeground(Color.BLACK);
+        friendList.setLayoutOrientation(JList.VERTICAL);
+        friendList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        friendList.setCellRenderer(new FriendListCellRenderer());
+
+        // Set text alignment to center
+        DefaultListCellRenderer renderer = (DefaultListCellRenderer) friendList.getCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        CustomScrollPane friendScrollPane = new CustomScrollPane(friendList);
+        friendScrollPane.setPreferredSize(new Dimension(150, 500));
+        rightPanel.add(friendScrollPane, BorderLayout.SOUTH);
+
+        // Add right panel to the frame
+        frame.add(rightPanel, BorderLayout.EAST);
+
+
+
 
         // Load profile icon using getResource
         ImageIcon originalIcon = new ImageIcon(Main.class.getResource("/ProfileIcons/Student2icon.png"));
@@ -85,8 +118,8 @@ public class Main {
                 g2.dispose();
             }
         };
-        profileButton.setPreferredSize(new Dimension(150, 150)); // Adjust the size as needed
-        profileButton.setContentAreaFilled(false); // Remove default button background
+        profileButton.setPreferredSize(new Dimension(150, 150));
+        profileButton.setContentAreaFilled(false);
 
         // Create buttons for profile, friends, settings, and logout
         JButton profileBtn = new JButton("Profile");
@@ -95,16 +128,16 @@ public class Main {
         JButton logoutBtn = new JButton("Logout");
 
         // Set background color and font color for buttons
-        Color buttonColor = new Color(0x2f2678); // Hexadecimal color #121866
+        Color buttonColor = new Color(0x2f2678);
         profileBtn.setBackground(buttonColor);
         friendsBtn.setBackground(buttonColor);
         settingsBtn.setBackground(buttonColor);
         logoutBtn.setBackground(buttonColor);
 
-        profileBtn.setForeground(Color.WHITE); // Set font color to white
-        friendsBtn.setForeground(Color.WHITE); // Set font color to white
-        settingsBtn.setForeground(Color.WHITE); // Set font color to white
-        logoutBtn.setForeground(Color.WHITE); // Set font color to white
+        profileBtn.setForeground(Color.WHITE);
+        friendsBtn.setForeground(Color.WHITE);
+        settingsBtn.setForeground(Color.WHITE);
+        logoutBtn.setForeground(Color.WHITE);
 
         // Set preferred sizes for the buttons
         Dimension buttonSize = new Dimension(100, 70); // Adjust as needed
@@ -155,7 +188,7 @@ public class Main {
             }
         };
 
-// Create table
+        // Create table
         JTable scheduleTable = new JTable(tableModel) {
             @Override
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -177,8 +210,8 @@ public class Main {
             public void mouseMoved(MouseEvent e) {
                 int row = scheduleTable.rowAtPoint(e.getPoint());
                 if (row > -1) {
-                    scheduleTable.clearSelection(); // Clear previous selection
-                    scheduleTable.setRowSelectionInterval(row, row); // Select the current row
+                    scheduleTable.clearSelection();
+                    scheduleTable.setRowSelectionInterval(row, row);
                 }
             }
         });
@@ -186,7 +219,7 @@ public class Main {
         scheduleTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                scheduleTable.clearSelection(); // Clear selection when mouse exits the table
+                scheduleTable.clearSelection();
             }
         });
 
@@ -196,15 +229,15 @@ public class Main {
         scheduleTable.getTableHeader().setForeground(Color.white);
         scheduleTable.setRowHeight(40); // Set row height
         scheduleTable.setFont(new Font("Arial", Font.PLAIN, 12));
-        ((DefaultTableCellRenderer) scheduleTable.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER); // Center align header text
+        ((DefaultTableCellRenderer) scheduleTable.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER); // Center align cell text
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         scheduleTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         scheduleTable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
         scheduleTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 
         // Add table to scroll pane
-        JScrollPane scrollPane = new JScrollPane(scheduleTable);
+        CustomScrollPane scrollPane = new CustomScrollPane(scheduleTable);
 
         // Add scroll pane to middle panel
         middlePanel.add(scrollPane, BorderLayout.CENTER);
@@ -220,25 +253,27 @@ public class Main {
         frame.setVisible(true);
 
         // Add some initial friends
-        addFriend("Friend 1 - online");
-        addFriend("Friend 2 - online");
-        addFriend("Friend 3 - offline");
-        addFriend("Friend 4 - offline");
-        addFriend("Friend 5 - online");
-        addFriend("Friend 6 - offline");
-        addFriend("Friend 7 - online");
-        addFriend("Friend 8 - offline");
-        addFriend("Friend 9 - online");
-        addFriend("Friend 10 - offline");
-        addFriend("Friend 11 - offline");
-        addFriend("Friend 12 - online");
-        addFriend("Friend 13 - offline");
-        addFriend("Friend 14 - offline");
-        addFriend("Friend 15 - offline");
+        addFriend("John Doe", true);
+        addFriend("Alice Smith", false);
+        addFriend("Bob Johnson", true);
+        addFriend("Emily Davis", false);
+        addFriend("Michael Wilson", true);
+        addFriend("Sarah Lee", true);
+        addFriend("David Garcia", false);
+        addFriend("Olivia Martinez", true);
+        addFriend("James Brown", false);
+        addFriend("Emma Harris", true);
+        addFriend("Daniel Clark", false);
+        addFriend("Sophia Adams", true);
+        addFriend("William Turner", true);
+        addFriend("Grace Thomas", false);
+        addFriend("Liam White", true);
     }
 
     // Method to add a friend to the list
-    private static void addFriend(String friendName) {
-        friendListModel.addElement(friendName);
+    private static void addFriend(String friendName, boolean isActive) {
+        String status = isActive ? "Active" : "Offline";
+        ImageIcon icon = new ImageIcon(Main.class.getResource("/Images/" + status + ".png"));
+        friendListModel.addElement("<html><img src='" + icon + "' width='8' height='8'> &nbsp; " + friendName);
     }
 }
