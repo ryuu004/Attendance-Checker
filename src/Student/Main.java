@@ -134,6 +134,36 @@ public class Main {
         settingsBtn.setBackground(buttonColor);
         logoutBtn.setBackground(buttonColor);
 
+
+        // Inside createAndShowGUI() method in Main class
+        profileBtn.addActionListener(e -> {
+
+            ProfileWindow profileWindow = new ProfileWindow(frame);
+
+            frame.setVisible(false);
+
+            frame.dispose();
+        });
+
+        friendsBtn.addActionListener(e -> {
+
+            FriendsWindow friendsWindow = new FriendsWindow(frame);
+
+            frame.setVisible(false);
+
+            frame.dispose();
+        });
+
+        settingsBtn.addActionListener(e -> {
+
+            SettingsWindow settingsWindow = new SettingsWindow(frame);
+
+            frame.setVisible(false);
+
+            frame.dispose();
+        });
+
+
         profileBtn.setForeground(Color.WHITE);
         friendsBtn.setForeground(Color.WHITE);
         settingsBtn.setForeground(Color.WHITE);
@@ -251,6 +281,7 @@ public class Main {
         frame.setSize(900, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.setResizable(false);
 
         // Add some initial friends
         addFriend("John Doe", true);
