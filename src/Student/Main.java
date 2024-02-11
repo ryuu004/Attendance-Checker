@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 
-public class Main {
+public class    Main {
     // Define the friend list model globally
     private static DefaultListModel<String> friendListModel;
 
@@ -20,6 +20,29 @@ public class Main {
         JFrame frame = new JFrame("Student Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
+        frame.setUndecorated(true);
+        // Create a custom title bar panel
+        JPanel titleBarPanel = new JPanel(new BorderLayout());
+        titleBarPanel.setBackground(new Color(0x201a59));
+        titleBarPanel.setPreferredSize(new Dimension(frame.getWidth(), 40)); // Set the height as needed
+
+        // Add the title bar panel to the frame's content pane at the top
+        frame.getContentPane().add(titleBarPanel, BorderLayout.NORTH);
+
+        // Create a JLabel for the close button
+        JLabel closeButton = new JLabel("x", SwingConstants.CENTER);
+        closeButton.setForeground(Color.WHITE);
+        closeButton.setFont(new Font("Arial", Font.BOLD, 16));
+        closeButton.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10)); // Add padding
+        closeButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                frame.dispose(); // Close the frame when the close button is clicked
+            }
+        });
+
+        // Add the close button to the title bar panel on the right side
+        titleBarPanel.add(closeButton, BorderLayout.EAST);
 
         // Left panel
         JPanel leftPanel = new JPanel();

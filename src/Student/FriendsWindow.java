@@ -17,17 +17,40 @@ public class FriendsWindow {
         frame = new JFrame("Friends");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
+        frame.setUndecorated(true);
+        // Create a custom title bar panel
+        JPanel titleBarPanel = new JPanel(new BorderLayout());
+        titleBarPanel.setBackground(new Color(0x201a59));
+        titleBarPanel.setPreferredSize(new Dimension(frame.getWidth(), 30)); // Set the height as needed
+
+        // Add the title bar panel to the frame's content pane at the top
+        frame.getContentPane().add(titleBarPanel, BorderLayout.NORTH);
+
+        // Create a JLabel for the close button
+        JLabel closeButton = new JLabel("x", SwingConstants.CENTER);
+        closeButton.setForeground(Color.WHITE);
+        closeButton.setFont(new Font("Arial", Font.BOLD, 16));
+        closeButton.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10)); // Add padding
+        closeButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                frame.dispose(); // Close the frame when the close button is clicked
+            }
+        });
+
+        // Add the close button to the title bar panel on the right side
+        titleBarPanel.add(closeButton, BorderLayout.EAST);
 
         // Create left panel
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(new Color(0x201a59));
-        leftPanel.setPreferredSize(new Dimension(200, 600)); // Same size as the left panel in the student page
+        leftPanel.setPreferredSize(new Dimension(300, 600)); // Same size as the left panel in the student page
 
         // Create back button panel
         JPanel backButtonPanel = new JPanel(new BorderLayout());
         backButtonPanel.setBackground(new Color(0x201a59));
         backButtonPanel.setBorder(new EmptyBorder(20, 20, 20, 20)); // Add padding
-        backButtonPanel.setPreferredSize(new Dimension(200, 100)); // Increase panel height
+        backButtonPanel.setPreferredSize(new Dimension(300, 100)); // Increase panel height
 
         // Load back button image
         BufferedImage backButtonImage = null;
@@ -54,7 +77,7 @@ public class FriendsWindow {
         JPanel personalInfoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Center the components horizontally
         personalInfoPanel.setBackground(new Color(0x201a59));
         personalInfoPanel.add(personalInfoLabel);
-        personalInfoLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        personalInfoLabel.setFont(new Font("Arial", Font.BOLD, 18));
 
         // Add back button panel and centered personal information panel to the left panel
         leftPanel.add(backButtonPanel, BorderLayout.NORTH);

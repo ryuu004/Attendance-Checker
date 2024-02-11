@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 
 public class ProfileWindow {
     private JFrame frame;
@@ -17,6 +18,30 @@ public class ProfileWindow {
         frame = new JFrame("Profile");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
+
+        frame.setUndecorated(true);
+        // Create a custom title bar panel
+        JPanel titleBarPanel = new JPanel(new BorderLayout());
+        titleBarPanel.setBackground(new Color(0x201a59));
+        titleBarPanel.setPreferredSize(new Dimension(frame.getWidth(), 30)); // Set the height as needed
+
+        // Add the title bar panel to the frame's content pane at the top
+        frame.getContentPane().add(titleBarPanel, BorderLayout.NORTH);
+
+        // Create a JLabel for the close button
+        JLabel closeButton = new JLabel("x", SwingConstants.CENTER);
+        closeButton.setForeground(Color.WHITE);
+        closeButton.setFont(new Font("Arial", Font.BOLD, 16));
+        closeButton.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10)); // Add padding
+        closeButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                frame.dispose(); // Close the frame when the close button is clicked
+            }
+        });
+
+        // Add the close button to the title bar panel on the right side
+        titleBarPanel.add(closeButton, BorderLayout.EAST);
 
         // Create left panel
         JPanel leftPanel = new JPanel();
@@ -66,29 +91,29 @@ public class ProfileWindow {
         // Create panel for student information
         JPanel studentInfoPanel = new JPanel();
         studentInfoPanel.setBackground(Color.WHITE);
-        studentInfoPanel.setLayout(new GridLayout(6, 3)); // 6 rows and 3 columns for each information
-
-        // Create right panel for student information
-        JPanel rightPanel = new JPanel();
-        rightPanel.setBackground(Color.WHITE);
-        rightPanel.setLayout(new BorderLayout());
+        studentInfoPanel.setLayout(new GridLayout(6, 1)); // 6 rows for each information
 
         // Add student information labels
         String[] labels = {"Student Name:", "Student ID:", "Address:", "Birthday:", "Email:", "Contact No:"};
         String[] info = {"John Doe", "S123456", "123 Main Street", "January 1, 2000", "john.doe@example.com", "+1 (123) 456-7890"};
 
         for (int i = 0; i < labels.length; i++) {
+            JPanel infoPanel = new JPanel(new BorderLayout());
+            infoPanel.setBackground(Color.WHITE);
+
             JLabel label = new JLabel(labels[i]);
             JLabel value = new JLabel(info[i]);
 
             label.setFont(new Font("Arial", Font.BOLD, 16));
             value.setFont(new Font("Arial", Font.BOLD, 14));
 
-            label.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 0)); // Add margin on the left
-            label.setHorizontalAlignment(SwingConstants.LEFT);
+            // Add margin to the left of label
+            label.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
+            value.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
 
-            value.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 30)); // Reduce space between label and info
-            value.setHorizontalAlignment(SwingConstants.LEFT);
+            // Add components to infoPanel
+            infoPanel.add(label, BorderLayout.WEST);
+            infoPanel.add(value, BorderLayout.CENTER);
 
             // Create edit icon
             BufferedImage editIconImage = null;
@@ -99,6 +124,7 @@ public class ProfileWindow {
             }
             ImageIcon editIcon = new ImageIcon(editIconImage);
             JLabel editIconLabel = new JLabel(editIcon);
+            editIconLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20)); // Add margin to the right of edit icon
 
             // Add mouse listener to edit icon label
             editIconLabel.addMouseListener(new MouseAdapter() {
@@ -113,24 +139,24 @@ public class ProfileWindow {
                 }
             });
 
-            // Add information label, edit icon label, and spacing to the student information panel
-            studentInfoPanel.add(label);
-            studentInfoPanel.add(value);
-            studentInfoPanel.add(editIconLabel);
+            // Add components to infoPanel
+            infoPanel.add(editIconLabel, BorderLayout.EAST);
+
+            // Add bottom border to infoPanel
+            infoPanel.setBorder(new MatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
+
+            // Add infoPanel to studentInfoPanel
+            studentInfoPanel.add(infoPanel);
         }
 
         // Add student information panel to the right panel
-        rightPanel.add(studentInfoPanel, BorderLayout.CENTER);
-
-        frame.add(rightPanel, BorderLayout.CENTER);
+        frame.add(studentInfoPanel, BorderLayout.CENTER);
 
         // Add mouse listener to back button label
         backButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
                 frame.dispose();
-
                 mainFrame.setVisible(true);
             }
         });
