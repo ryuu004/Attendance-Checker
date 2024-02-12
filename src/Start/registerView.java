@@ -7,7 +7,11 @@ import javax.swing.event.DocumentListener;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,21 +33,21 @@ public class registerView extends JFrame {
     int height = 600;
     Font robotoFont = loadFont("/resources/font/Roboto-Regular.ttf").deriveFont(Font.BOLD, 14);
     Font robotoFont1 = loadFont("/resources/font/Roboto-Regular.ttf").deriveFont(Font.BOLD, 14);
-          
+    private static final String FILE_PATH = "src\\read\\entryNumber.txt"; //LOAD     
     static JLabel showPassword;    
     static JLabel op02;
     static JLabel op01;    
     static int statusStudentI;
-   
+    static int entryNumber = 1; //
     private JDateChooser dateChooser;
     private JPanel contentPane;
-    private JTextField textField;
+    private JTextField userName;
     private JTextField tpPassword;
     private JTextField textField_1;
-    private JTextField textField_2;
+    private JTextField name;
     private JTextField textField_3;
     private JTextField emailField;
-    private JTextField textField_6;
+    private JTextField contactField;
     private JTextField mailText;
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -120,10 +124,11 @@ public class registerView extends JFrame {
         formView.add(usernameField);
         usernameField.setLayout(null);
         
-        textField = new JTextField();
-        textField.setBounds(10, 0, 153, 31);
-        usernameField.add(textField);
-        textField.setColumns(10);
+        userName = new JTextField();
+        userName.setBounds(10, 0, 153, 31);
+        userName.setHorizontalAlignment(JTextField.CENTER); 
+        usernameField.add(userName);
+        userName.setColumns(10);
         
         JLabel lblNewLabel_1_1 = new JLabel("CREATE USERNAME:");
         lblNewLabel_1_1.setForeground(Color.WHITE);
@@ -176,21 +181,75 @@ public class registerView extends JFrame {
         	}
         });
         
-        
-        
-        
+
         showPassword.setIcon(new ImageIcon(loginView.class.getResource("/Images/eye (1) (1).png")));
         showPassword.setBounds(464, 409, 26, 14);
         formView.add(showPassword);
         
-        JLabel button = new JLabel("");
-        button.setIcon(new ImageIcon(registerView.class.getResource("/Images/regButton.png")));
-        button.setBounds(350, 435, 165, 65);
-        formView.add(button);
+        JLabel buttonRegister = new JLabel("");
+        buttonRegister.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String get = userName.getText();
+                String get01 = name.getText();
+                String filePath = "src\\read\\eno.txt"; // RELATIVE PATH
+                
+                //LOAD NUMBER
+                try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+                    String line = reader.readLine();
+                    if (line != null && !line.isEmpty()) {
+                        entryNumber = Integer.parseInt(line.trim());
+                    }
+                } catch (IOException | NumberFormatException h) {
+                    h.printStackTrace();
+                    System.err.println("Error loading entryNumber: " + h.getMessage());
+                }
+                
+                //UPLOAD
+                try {
+                    new File("src\\read\\").mkdirs();
+
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+                    	writer.write(entryNumber + "  " + get + "  " + get01);
+                        writer.newLine();
+                        entryNumber++;
+                        System.out.println("Data written to the file successfully.");                        
+                    }
+                    
+                    
+                    
+                    //SAVE NUMBER
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+                        writer.write(String.valueOf(entryNumber));
+                        System.out.println(entryNumber);
+                    } catch (IOException g) {
+                        g.printStackTrace();
+                        System.err.println("Error saving entryNumber: " + g.getMessage());
+                    }
+                    
+                    
+                    
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    System.err.println("Error writing to the file: " + ex.getMessage());
+                }
+            }
+        });
+        
+        buttonRegister.setIcon(new ImageIcon(registerView.class.getResource("/Images/regButton.png")));
+        buttonRegister.setBounds(350, 435, 165, 65);
+        formView.add(buttonRegister);
+        
+        
+        
+        
+          
+        
         
         JLabel reg = new JLabel("Already have an account? Login");
         reg.setFont(new Font("Tahoma", Font.PLAIN, 11));
-        reg.setForeground(new Color(0, 128, 255));
+        reg.setForeground(new Color(255, 255, 128));
         reg.setBounds(23, 466, 291, 30);
         formView.add(reg);
         
@@ -215,10 +274,11 @@ public class registerView extends JFrame {
         usernameField_1.setBounds(55, 138, 173, 30);
         formView.add(usernameField_1);
         
-        textField_2 = new JTextField();
-        textField_2.setColumns(10);
-        textField_2.setBounds(10, 0, 153, 31);
-        usernameField_1.add(textField_2);
+        name = new JTextField();
+        name.setHorizontalAlignment(JTextField.CENTER); 
+        name.setColumns(10);
+        name.setBounds(10, 0, 153, 31);
+        usernameField_1.add(name);
         
         
         
@@ -307,10 +367,15 @@ public class registerView extends JFrame {
         passwordField_3.setBounds(260, 260, 173, 30);
         formView.add(passwordField_3);
         
-        textField_6 = new JTextField();
-        textField_6.setBounds(10, 0, 153, 31);
-        passwordField_3.add(textField_6);
-        textField_6.setColumns(10);
+        contactField = new JTextField();
+        contactField.setText("9");
+        contactField.setBounds(45, 0, 118, 31);
+        passwordField_3.add(contactField);
+        contactField.setColumns(10);
+        
+        JLabel lblNewLabel_3 = new JLabel("+63");
+        lblNewLabel_3.setBounds(11, 8, 46, 14);
+        passwordField_3.add(lblNewLabel_3);
         
         JPanel usernameField_1_1_1 = new JPanel() {
         	@Override
@@ -366,12 +431,15 @@ public class registerView extends JFrame {
         		if (statusStudentI == 0) {
         			op01.setIcon(new ImageIcon(registerView.class.getResource("/Images/radio_ch (3).png")));
         			op02.setIcon(new ImageIcon(registerView.class.getResource("/Images/radio_unc (1).png")));
+        			op01.setForeground(new Color(255, 255, 128));        	        
+        			op02.setForeground(Color.WHITE);
         		} 
         		
         		
         	}
         });
         op01.setForeground(new Color(255, 255, 255));
+        op01.setFont(robotoFont.deriveFont(Font.BOLD, 12));
         op01.setIcon(new ImageIcon(registerView.class.getResource("/Images/radio_unc (1).png")));
         op01.setBounds(307, 135, 98, 35);
         formView.add(op01);
@@ -386,11 +454,14 @@ public class registerView extends JFrame {
         		if (statusStudentI == 1) {
         			op01.setIcon(new ImageIcon(registerView.class.getResource("/Images/radio_unc (1).png")));
         			op02.setIcon(new ImageIcon(registerView.class.getResource("/Images/radio_ch (3).png")));
+        			op02.setForeground(new Color(255, 255, 128));  
+        			op01.setForeground(Color.WHITE);
         		}  		
         	}
         });
         op02.setIcon(new ImageIcon(registerView.class.getResource("/Images/radio_unc (1).png")));
         op02.setForeground(Color.WHITE);
+        op02.setFont(robotoFont.deriveFont(Font.BOLD, 12));
         op02.setBounds(410, 135, 109, 35);
         formView.add(op02);
         showPassword.setVisible(false);

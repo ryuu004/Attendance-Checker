@@ -183,7 +183,7 @@ public class loginView extends JFrame {
         	}
         });
         reg.setFont(new Font("Tahoma", Font.PLAIN, 11));
-        reg.setForeground(new Color(0, 128, 255));
+        reg.setForeground(new Color(255, 255, 128));
         reg.setBounds(298, 380, 291, 30);
         formView.add(reg);
         showPassword.setVisible(false);
