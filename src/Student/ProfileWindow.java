@@ -32,7 +32,7 @@ public class ProfileWindow {
         JLabel closeButton = new JLabel("x", SwingConstants.CENTER);
         closeButton.setForeground(Color.WHITE);
         closeButton.setFont(new Font("Arial", Font.BOLD, 16));
-        closeButton.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10)); // Add padding
+        closeButton.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         closeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

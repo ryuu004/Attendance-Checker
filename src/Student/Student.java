@@ -6,17 +6,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 
-public class    Main {
+public class Student extends  JFrame{
     // Define the friend list model globally
     private static DefaultListModel<String> friendListModel;
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            createAndShowGUI();
-        });
-    }
-
-    private static void createAndShowGUI() {
+    public Student(){
         JFrame frame = new JFrame("Student Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
@@ -60,7 +54,7 @@ public class    Main {
         topPanel.setLayout(new BorderLayout());
 
         // Load the cover photo image using getResource
-        ImageIcon coverPhotoIcon = new ImageIcon(Main.class.getResource("/Images/Cover.png"));
+        ImageIcon coverPhotoIcon = new ImageIcon(Student.class.getResource("/Images/Cover.png"));
         JLabel coverPhotoLabel = new JLabel(coverPhotoIcon);
         topPanel.add(coverPhotoLabel);
 
@@ -120,7 +114,7 @@ public class    Main {
 
 
         // Load profile icon using getResource
-        ImageIcon originalIcon = new ImageIcon(Main.class.getResource("/ProfileIcons/Student2icon.png"));
+        ImageIcon originalIcon = new ImageIcon(Student.class.getResource("/ProfileIcons/Student2icon.png"));
 
         // Create the profile icon button as a circle
         JButton profileButton = new JButton() {
@@ -327,7 +321,7 @@ public class    Main {
     // Method to add a friend to the list
     private static void addFriend(String friendName, boolean isActive) {
         String status = isActive ? "Active" : "Offline";
-        ImageIcon icon = new ImageIcon(Main.class.getResource("/Images/" + status + ".png"));
+        ImageIcon icon = new ImageIcon(Student.class.getResource("/Images/" + status + ".png"));
         friendListModel.addElement("<html><img src='" + icon + "' width='8' height='8'> &nbsp; " + friendName);
     }
 }
