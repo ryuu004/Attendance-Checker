@@ -344,6 +344,17 @@ public class Register {
         thirdlayer.add(register1);
         thirdlayer.setBorder(new EmptyBorder(30, 0, 0, 0));
 
+        register1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Open DoneFrame
+                Done doneFrame = new Done(mainframe, frame);
+                doneFrame.setVisible(true);
+            }
+        });
+
+
+
         JPanel topPanel = new JPanel();
         topPanel.setBackground(new Color(0x201a59));
         topPanel.setPreferredSize(new Dimension(900, 30));

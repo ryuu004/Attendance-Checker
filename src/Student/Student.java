@@ -1,4 +1,5 @@
 package Student;
+import Start.Main;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -7,10 +8,11 @@ import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 
 public class Student extends  JFrame{
-    // Define the friend list model globally
     private static DefaultListModel<String> friendListModel;
+    private  JFrame mainFrame;
 
-    public Student(){
+    public Student(JFrame mainFrame){
+        this.mainFrame = mainFrame;
         JFrame frame = new JFrame("Student Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
@@ -18,7 +20,7 @@ public class Student extends  JFrame{
         // Create a custom title bar panel
         JPanel titleBarPanel = new JPanel(new BorderLayout());
         titleBarPanel.setBackground(new Color(0x201a59));
-        titleBarPanel.setPreferredSize(new Dimension(frame.getWidth(), 40)); // Set the height as needed
+        titleBarPanel.setPreferredSize(new Dimension(frame.getWidth(), 40));
 
         // Add the title bar panel to the frame's content pane at the top
         frame.getContentPane().add(titleBarPanel, BorderLayout.NORTH);
@@ -27,15 +29,14 @@ public class Student extends  JFrame{
         JLabel closeButton = new JLabel("x", SwingConstants.CENTER);
         closeButton.setForeground(Color.WHITE);
         closeButton.setFont(new Font("Arial", Font.BOLD, 16));
-        closeButton.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10)); // Add padding
+        closeButton.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         closeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                frame.dispose(); // Close the frame when the close button is clicked
+                frame.dispose();
             }
         });
 
-        // Add the close button to the title bar panel on the right side
         titleBarPanel.add(closeButton, BorderLayout.EAST);
 
         // Left panel
@@ -178,6 +179,19 @@ public class Student extends  JFrame{
             frame.setVisible(false);
 
             frame.dispose();
+        });
+
+
+        logoutBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                frame.dispose();
+                // Make the main frame (start window) visible again
+                mainFrame.setVisible(true);
+
+
+            }
         });
 
 

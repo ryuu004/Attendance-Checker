@@ -158,7 +158,7 @@ public class Main {
             loginBtn.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    Student student = new Student();
+                    Student student = new Student(frame);
 
                     frame.dispose();
 
