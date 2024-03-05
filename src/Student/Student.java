@@ -1,5 +1,6 @@
 package Student;
 import Start.Main;
+import Start.Register;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -10,7 +11,8 @@ import java.awt.geom.Ellipse2D;
 public class Student extends  JFrame{
     private static DefaultListModel<String> friendListModel;
     private  JFrame mainFrame;
-
+    
+    
     public Student(JFrame mainFrame){
         this.mainFrame = mainFrame;
         JFrame frame = new JFrame("Student Page");
@@ -75,6 +77,16 @@ public class Student extends  JFrame{
         rightPanel.add(modifyStatusButton, BorderLayout.NORTH);
         modifyStatusButton.setBackground(new Color(0x2f2678));
         modifyStatusButton.setForeground(Color.WHITE);
+        
+        modifyStatusButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	//
+            	Status rl0 = new Status();
+				rl0.setVisible(true);
+            }
+        });
+        
 
         // Create a panel for the inbox button
         JPanel inboxPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
